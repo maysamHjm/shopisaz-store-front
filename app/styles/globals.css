@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+:root {
+}
+
+@theme {
+  --color-tertiary: theme(--color-gray-500);
+  --color-rating: theme(--color-yellow-400);
+  --color-primary: theme(--color-neutral-900);
+  --color-secondary: theme(--color-neutral-700);
+  --color-success: theme(--color-green-500);
+  --color-success-hover: theme(--color-green-600);
+  --color-error: theme(--color-red-500);
+  --color-error-hover: theme(--color-red-600);
+
+  --color-tertiary-border: theme(--color-gray-200);
+  --color-secondary-border: theme(--color-gray-300);
+
+  --color-placeholder: theme(--color-neutral-400);
+
+  --color-brand-primary: #1677ff;
+  --color-brand-primary-hover: #146be6;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Inter, Arial, Helvetica, sans-serif;
+}
+
+.material-symbols-rounded.filled {
+  font-variation-settings: "FILL" 1, "wght" 400, "opsz" 24;
+}
+
+.loader {
+  --c: currentColor;
+  --size: 6px;
+  --gap: 2px;
+
+  width: calc(var(--size) * 5);
+  aspect-ratio: 5/1;
+
+  --dot: no-repeat
+    radial-gradient(circle closest-side, var(--c) 90%, transparent);
+
+  background: var(--dot) 0% 50%, var(--dot) 50% 50%, var(--dot) 100% 50%;
+
+  background-size: var(--size) var(--size), var(--size) var(--size),
+    var(--size) var(--size);
+
+  animation: loaderDots 1s infinite ease-in-out;
+}
+
+@keyframes loaderDots {
+  0%,
+  100% {
+    background-size: var(--size) var(--size), var(--size) var(--size),
+      var(--size) var(--size);
+  }
+  33% {
+    background-size: var(--size) 0%, var(--size) var(--size),
+      var(--size) var(--size);
+  }
+  50% {
+    background-size: var(--size) var(--size), var(--size) 0%,
+      var(--size) var(--size);
+  }
+  66% {
+    background-size: var(--size) var(--size), var(--size) var(--size),
+      var(--size) 0%;
+  }
+}
