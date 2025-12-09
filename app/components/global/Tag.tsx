@@ -5,14 +5,19 @@ export default function Tag({
   caption,
   color,
   icon,
+  size = "lg",
 }: {
   caption: string;
   color: string;
   icon?: ReactNode;
+  size?: "sm" | "md" | "lg" | "xl";
 }) {
   return (
     <div
-      className="font-medium text-sm leading-5 px-3 py-1.5 rounded-md gap-1.5 w-fit items-center flex"
+      className={`font-medium gap-1.5 w-fit items-center flex
+        ${size === "md" ? "text-sm leading-4 px-3 py-1.5 rounded-md" : ""}
+        ${size === "lg" ? "text-sm leading-5 px-4 py-2 rounded-md" : ""}
+      `}
       style={{ backgroundColor: toRGBA(color, 0.1), color }}
     >
       {icon || null}

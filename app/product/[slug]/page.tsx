@@ -1,23 +1,25 @@
 import AddToCard from "@/app/components/ProductAddToCard";
+import ProductMediaSlider from "@/app/components/ProductMediaSlider";
 import ProductPersonalization from "@/app/components/ProductPersonalization";
 import ProductShippingReturn from "@/app/components/ProductShippingReturn";
 import ProductShortDescription from "@/app/components/ProductShortDescription";
 import ProductVariation from "@/app/components/ProductVariation";
 import SalesCountDown from "@/app/components/SalesCountDown";
-import DButton from "@/app/components/global/DButton";
 import Tag from "@/app/components/global/Tag";
 import { slugify } from "@/app/utils";
+import ProductTabBar from "@/app/components/ProductTabBar";
+import DBreadcrumb from "@/app/components/global/DBreadcrumb";
+import ProductDescription from "@/app/components/ProductDescription";
+import ProductReviews from "@/app/components/ProductReviews";
+import DRating from "@/app/components/global/DRating";
+import ProductCard from "@/app/components/ProductCard";
 
-export default async function ProductPage({ params }: any) {
+export default async function ProductPage({ params, searchParams }: any) {
   const { slug } = await params;
+  const { tab } = await searchParams;
 
   const parts = slug.split("-");
   const shortId = parts[parts.length - 1];
-  console.log(
-    slugify(
-      "Organic Cotton Baby Romper Set - Soft & Comfortable Newborn Essentials with Snap Closures, Hypoallergenic Fabric for Sensitive Skin, Perfect for Daily Wear and Special Occasions"
-    )
-  );
 
   //   const res = await fetch(
   //     `${process.env.API_URL}/products/by-short-id/${shortId}`,
@@ -26,15 +28,14 @@ export default async function ProductPage({ params }: any) {
 
   return (
     <div className="gap-9 flex flex-col">
-      <section className="text-tertiary flex items-center gap-4 text-sm">
-        <span>Home</span>
-        <span className="material-symbols-rounded text-sm!">chevron_right</span>
-        <span>Baby & Kids</span>
-        <span className="material-symbols-rounded text-sm!">chevron_right</span>
-        <span>Baby Clothing</span>
-      </section>
-      <section className="grid grid-cols-[auto_424px] gap-6">
-        <article>2</article>
+      <DBreadcrumb list={["Home", "Baby & Kids", "Baby Clothing"]} />
+      <section className="grid grid-cols-[calc(100%-424px)_424px] gap-6 ">
+        <article className="self-start flex flex-col gap-6">
+          <ProductMediaSlider />
+
+          <ProductTabBar />
+          {tab === "reviews" ? <ProductReviews /> : <ProductDescription />}
+        </article>
         <aside className="flex flex-col gap-6">
           <div className="flex flex-col gap-3">
             <div className="flex gap-3">
@@ -58,13 +59,7 @@ export default async function ProductPage({ params }: any) {
               />
             </div>
             <div className="flex items-center gap-2">
-              <div className="text-rating flex">
-                <span className="material-symbols-rounded filled">star</span>
-                <span className="material-symbols-rounded -ml-1">star</span>
-                <span className="material-symbols-rounded -ml-1">star</span>
-                <span className="material-symbols-rounded -ml-1">star</span>
-                <span className="material-symbols-rounded -ml-1">star</span>
-              </div>
+              <DRating value={3.5} />
               <div className="text-tertiary leading-6">(324 review(s))</div>
             </div>
             <h1 className="text-primary leading-6 ">
@@ -115,6 +110,25 @@ export default async function ProductPage({ params }: any) {
           <ProductShortDescription />
           <ProductShippingReturn />
         </aside>
+      </section>
+      <section className="flex flex-col gap-4">
+        <h2 className="text-primary font-bold leading-8 text-2xl">
+          You Might Also Like
+        </h2>
+        <div className="grid gap-6 grid-cols-[repeat(auto-fit,minmax(180px,1fr))]">
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+          <ProductCard />
+        </div>
       </section>
     </div>
   );

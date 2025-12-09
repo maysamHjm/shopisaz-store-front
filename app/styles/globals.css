@@ -16,10 +16,14 @@
   --color-tertiary-border: theme(--color-gray-200);
   --color-secondary-border: theme(--color-gray-300);
 
+  --color-secondary-bg: theme(--color-neutral-100);
+
   --color-placeholder: theme(--color-neutral-400);
 
   --color-brand-primary: #1677ff;
   --color-brand-primary-hover: #146be6;
+
+  --color-brand-secondary: #ff9e16;
 }
 
 body {
