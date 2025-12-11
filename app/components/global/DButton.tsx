@@ -22,7 +22,7 @@ export default function DButton({
   className?: string;
   size: "md" | "large" | "xlarge";
   icon?: ReactElement<any>;
-  type?: "primary" | "text";
+  type?: "primary" | "neutral";
 }) {
   const innerIcon = icon
     ? cloneElement(icon, {
@@ -57,6 +57,11 @@ export default function DButton({
           ? "bg-brand-primary text-white hover:bg-brand-primary-hover shadow-brand-primary/30"
           : ""
       }
+      ${
+        type === "neutral"
+          ? "bg-white hover:border-brand-primary border border-transparent shadow-brand-primary/30"
+          : ""
+      }
      `}
     >
       {loading ? (
@@ -64,7 +69,11 @@ export default function DButton({
       ) : (
         <>
           {innerIcon ? (
-            <span className={`${size === "md" ? "text-xl leading-5" : ""}`}>
+            <span
+              className={`flex items-center justify-center ${
+                size === "md" ? "text-xl leading-5" : ""
+              }`}
+            >
               {innerIcon}
             </span>
           ) : null}

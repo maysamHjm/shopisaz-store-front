@@ -5,7 +5,11 @@ import DTextButton from "./global/DTextButton";
 import ProductReviews from "./ProductReviews";
 import { useRouter } from "next/navigation";
 
-export default function ProductTabBar() {
+export default function ProductTabBar({
+  hasDescription,
+}: {
+  hasDescription: boolean;
+}) {
   const [selectedTab, setSelectedTab] = useState({
     caption: "Reviews",
     url: "?tab=reviews",
@@ -17,7 +21,9 @@ export default function ProductTabBar() {
         <DTab
           tabs={[
             { caption: "Reviews", url: "?tab=reviews" },
-            { caption: "Product Description", url: "?tab=description" },
+            ...(hasDescription
+              ? [{ caption: "Product Description", url: "?tab=description" }]
+              : []),
           ]}
           onChange={(currentTab) => {
             setSelectedTab(currentTab);

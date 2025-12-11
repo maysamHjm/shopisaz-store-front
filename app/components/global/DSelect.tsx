@@ -13,15 +13,18 @@ export default function DSelect({
   options,
   placeholder,
   isClearable = false,
+  defaultValue,
 }: {
   value: DSelectOption | null;
   onChange: (newValue: SingleValue<DSelectOption>) => void;
   options: DSelectOption[];
   placeholder?: string;
   isClearable?: boolean;
+  defaultValue?: DSelectOption;
 }) {
   return (
     <Select
+      defaultValue={defaultValue}
       isClearable={isClearable}
       classNames={{
         control: () => "h-12! rounded-lg! border-secondary-border!",

@@ -8,17 +8,20 @@ import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import "swiper/css/thumbs";
 import "swiper/css/pagination";
+import { ProductDetail } from "../types/product.types";
 
-export default function ProductMediaSlider({}) {
+export default function ProductMediaSlider({
+  media,
+}: {
+  media: ProductDetail.Media[];
+}) {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
   const mainSwiperRef = useRef<SwiperType | null>(null);
-
-  const images = ["/test2.png", "/test2.png", "/test2.png", "/test2.png"];
 
   return (
     <div className="flex gap-3 max-w-full overflow-hidden flex-col md:flex-row">
       {/* Thumbnails */}
-      {images.length > 1 && (
+      {media.length > 1 && (
         <div className="w-20 shrink-0 hidden md:block">
           <Swiper
             onSwiper={setThumbsSwiper}
@@ -38,14 +41,16 @@ export default function ProductMediaSlider({}) {
               },
             }}
           >
-            {images.map((src, i) => (
+            {media?.map((src, i) => (
               <SwiperSlide
                 key={i}
                 className="border border-solid border-transparent rounded-lg overflow-hidden duration-300! transition-all!"
               >
                 <div className="aspect-square">
                   <img
-                    src={src}
+                    src={
+                      process.env.NEXT_PUBLIC_MEDIA_UPLOAD_DIR + src.fileName
+                    }
                     className="w-full h-full object-cover rounded-lg"
                   />
                 </div>
@@ -58,31 +63,39 @@ export default function ProductMediaSlider({}) {
       {/* Main slider container (to position buttons over it) */}
       <div className="relative flex-1 w-full min-w-0">
         {/* Custom Prev Button */}
-        <button
-          onClick={() => mainSwiperRef.current?.slidePrev()}
-          className="
+        {media.length > 1 && (
+          <>
+            <button
+              onClick={() => mainSwiperRef.current?.slidePrev()}
+              className="
             absolute left-2 top-1/2 -translate-y-1/2
             z-20 w-12 h-12 bg-white rounded-lg
             flex items-center justify-center
             border border-solid border-secondary-border
           "
-        >
-          <span className="material-symbols-rounded -ml-1">chevron_left</span>
-        </button>
+            >
+              <span className="material-symbols-rounded -ml-1">
+                chevron_left
+              </span>
+            </button>
 
-        {/* Custom Next Button */}
-        <button
-          onClick={() => mainSwiperRef.current?.slideNext()}
-          className="
+            {/* Custom Next Button */}
+            <button
+              onClick={() => mainSwiperRef.current?.slideNext()}
+              className="
             absolute right-2 top-1/2 -translate-y-1/2
             z-20 w-12 h-12 bg-white rounded-lg 
             flex items-center justify-center
             border border-solid border-secondary-border
 
           "
-        >
-          <span className="material-symbols-rounded -ml-1">chevron_right</span>
-        </button>
+            >
+              <span className="material-symbols-rounded -ml-1">
+                chevron_right
+              </span>
+            </button>
+          </>
+        )}
 
         {/* Main Slider */}
         <Swiper
@@ -94,9 +107,12 @@ export default function ProductMediaSlider({}) {
           className="w-full"
           autoHeight={true}
         >
-          {images.map((src, i) => (
+          {media?.map((src, i) => (
             <SwiperSlide key={i}>
-              <img src={src} className="w-full rounded-2xl object-contain" />
+              <img
+                src={process.env.NEXT_PUBLIC_MEDIA_UPLOAD_DIR + src.fileName}
+                className="w-full rounded-2xl object-contain"
+              />
             </SwiperSlide>
           ))}
         </Swiper>

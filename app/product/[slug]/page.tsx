@@ -13,33 +13,62 @@ import ProductDescription from "@/app/components/ProductDescription";
 import ProductReviews from "@/app/components/ProductReviews";
 import DRating from "@/app/components/global/DRating";
 import ProductCard from "@/app/components/ProductCard";
+import { ProductDetail } from "@/app/types/product.types";
+import DynamicPrice from "@/app/components/ProductPrice";
+import ProductPurchaseSummary from "@/app/components/productPurchaseSummary";
 
 export default async function ProductPage({ params, searchParams }: any) {
   const { slug } = await params;
   const { tab } = await searchParams;
 
-  const parts = slug.split("-");
-  const shortId = parts[parts.length - 1];
+  // const parts = slug.split("-");
+  // const shortId = parts[parts.length - 1];
 
-  //   const res = await fetch(
-  //     `${process.env.API_URL}/products/by-short-id/${shortId}`,
-  //     { cache: "no-store" }
-  //   );
+  const res = await fetch(
+    `${process.env.API_URL}/products/get-details/${slug}`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!res.ok) throw new Error("Failed to fetch product");
+
+  const product = (await res.json()) as ProductDetail.Response;
+  const categoryList =
+    product.categories.length > 0
+      ? product.categories.map((cat) => cat.path[0].name)
+      : ["Products"];
 
   return (
     <div className="gap-9 flex flex-col">
-      <DBreadcrumb list={["Home", "Baby & Kids", "Baby Clothing"]} />
-      <section className="grid grid-cols-[calc(100%-424px)_424px] gap-6 ">
+      <DBreadcrumb list={["Home", ...categoryList]} />
+      <section className="grid grid-cols-[calc(100%-460px)_460px] gap-6 ">
         <article className="self-start flex flex-col gap-6">
-          <ProductMediaSlider />
+          {product.media.length > 0 && (
+            <ProductMediaSlider media={product.media} />
+          )}
 
-          <ProductTabBar />
-          {tab === "reviews" ? <ProductReviews /> : <ProductDescription />}
+          <ProductTabBar
+            hasDescription={
+              !!(
+                product.descriptions.long &&
+                product.descriptions.long !== "<p><br></p>"
+              )
+            }
+          />
+          {tab === "description" &&
+          product.descriptions.long &&
+          product.descriptions.long !== "<p><br></p>" ? (
+            <ProductDescription description={product.descriptions.long} />
+          ) : (
+            <ProductReviews />
+          )}
         </article>
         <aside className="flex flex-col gap-6">
           <div className="flex flex-col gap-3">
             <div className="flex gap-3">
               <Tag
+                size="md"
                 caption="Best Seller"
                 icon={
                   <span className="material-symbols-outlined filled text-base!">
@@ -49,6 +78,7 @@ export default async function ProductPage({ params, searchParams }: any) {
                 color="#0EA5E9"
               />
               <Tag
+                size="md"
                 caption="Free Shipping"
                 icon={
                   <span className="material-symbols-outlined filled text-base!">
@@ -62,17 +92,17 @@ export default async function ProductPage({ params, searchParams }: any) {
               <DRating value={3.5} />
               <div className="text-tertiary leading-6">(324 review(s))</div>
             </div>
-            <h1 className="text-primary leading-6 ">
-              Organic Cotton Baby Romper Set - Soft & Comfortable Newborn
-              Essentials with Snap Closures, Hypoallergenic Fabric for Sensitive
-              Skin, Perfect for Daily Wear and Special Occasions
-            </h1>
+            <h1 className="text-primary leading-6 ">{product.productName}</h1>
             <div className="flex gap-3 items-center">
               <div className="text-success text-4xl font-bold leading-10">
-                $24
+                $
+                <span id="ssr-price">
+                  {product.sellPrice?.toLocaleString()}
+                </span>
               </div>
+              {product.variants.length > 0 && <DynamicPrice />}
               <div className="text-secondary leading-6 line-through">$48</div>
-              <Tag caption="50% OFF" color="#00C950" />
+              <Tag caption="50% OFF" color="#00C950" size="md" />
               <SalesCountDown
                 caption="Sale Ends in:"
                 time={new Date(Date.now() + 3600 * 1000 * 2)}
@@ -97,39 +127,44 @@ export default async function ProductPage({ params, searchParams }: any) {
             Size Chart
           </button>
           <div>
-            <ProductVariation />
+            {product.variants.length > 0 && (
+              <ProductVariation variants={product.variants} />
+            )}
           </div>
           <div className="text-lg font-bold leading-7 text-primary">
             Personalization
           </div>
           <div>
-            <ProductPersonalization />
+            {product.personalizations?.length > 0 && (
+              <ProductPersonalization
+                personalization={product.personalizations}
+              />
+            )}
           </div>
+          <ProductPurchaseSummary />
           <AddToCard />
           <div className="border-t border-solid border-t-secondary-border"></div>
-          <ProductShortDescription />
+          {product.descriptions.short &&
+            product.descriptions.short !== "<p><br></p>" && (
+              <ProductShortDescription
+                description={product.descriptions.short}
+              />
+            )}
           <ProductShippingReturn />
         </aside>
       </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-primary font-bold leading-8 text-2xl">
-          You Might Also Like
-        </h2>
-        <div className="grid gap-6 grid-cols-[repeat(auto-fit,minmax(180px,1fr))]">
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-        </div>
-      </section>
+      {product.relatedProducts.length > 0 && (
+        <section className="flex flex-col gap-4">
+          <h2 className="text-primary font-bold leading-8 text-2xl">
+            You Might Also Like
+          </h2>
+          <div className="grid gap-6 grid-cols-[repeat(auto-fit,minmax(180px,200px))]">
+            {product.relatedProducts.map((relatedProduct, index) => (
+              <ProductCard product={relatedProduct} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

@@ -2,9 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const MAX_HEIGHT = 310;
+const MAX_HEIGHT = 240;
 
-export default function ProductShortDescription() {
+export default function ProductShortDescription({
+  description,
+}: {
+  description: string;
+}) {
   const [open, setOpen] = useState(false);
   const [canExpand, setCanExpand] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -48,26 +52,25 @@ export default function ProductShortDescription() {
         )}
 
         {/* Content */}
-        <div className="pb-4">
-          <p>
-            Our Organic Cotton Baby Romper Set is thoughtfully designed for your
-            little one's comfort and your peace of mind. Made from premium
-            GOTS-certified organic cotton, this adorable outfit combines style,
-            functionality, and the gentlest care for your baby's delicate skin.
-          </p>
-          <p>
-            Our Organic Cotton Baby Romper Set is thoughtfully designed for your
-            little one's comfort and your peace of mind. Made from premium
-            GOTS-certified organic cotton, this adorable outfit combines style,
-            functionality, and the gentlest care for your baby's delicate skin.
-          </p>
-          <p>
-            Our Organic Cotton Baby Romper Set is thoughtfully designed for your
-            little one's comfort and your peace of mind. Made from premium
-            GOTS-certified organic cotton, this adorable outfit combines style,
-            functionality, and the gentlest care for your baby's delicate skin.
-          </p>
-        </div>
+        <div
+          className="pb-4 short-description-container [&_ul]:ps-4"
+          dangerouslySetInnerHTML={{ __html: description }}
+        ></div>
+        <style>
+          {`
+          .short-description-container p{
+            line-height: 1.5rem;
+            color: #404040;
+            margin-bottom: 1rem;
+          }
+            .short-description-container ul{
+            line-height: 1.5rem;
+            color: #404040;
+            margin-bottom: 1rem;
+            list-style: disc;
+          }
+          `}
+        </style>
       </div>
 
       {canExpand && (
