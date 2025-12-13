@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { toRGBA } from "../../utils";
+import { toRGBA } from "../../app/utils";
 
 export default function Tag({
   caption,

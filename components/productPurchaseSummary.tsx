@@ -1,6 +1,6 @@
 "use client";
 
-import { useProductStore } from "../stores/product";
+import { useProductStore } from "@/stores/product";
 
 export default function ProductPurchaseSummary() {
   const { finalSellPrice, personalizations, personalizationOrder } =
@@ -33,33 +33,35 @@ export default function ProductPurchaseSummary() {
       </div>
 
       {/* PERSONALIZATION ITEMS */}
-      {list.map((p) => {
-        if (p.type === 3 && p.items) {
-          return p.items.map((item) => (
+      {list
+        .filter((item) => item.price)
+        .map((p) => {
+          if (p.type === 3 && p.items) {
+            return p.items.map((item) => (
+              <div
+                key={`${p.personalizationId}-${item.itemId}`}
+                className="flex items-center justify-between"
+              >
+                <span className="text-sm font-medium text-secondary">
+                  + {item.label}
+                </span>
+                <span>${item.price.toFixed(2)}</span>
+              </div>
+            ));
+          }
+
+          return (
             <div
-              key={`${p.personalizationId}-${item.itemId}`}
+              key={p.personalizationId}
               className="flex items-center justify-between"
             >
               <span className="text-sm font-medium text-secondary">
-                + {item.label}
+                + {p.label}
               </span>
-              <span>${item.price.toFixed(2)}</span>
+              <span>${p.price.toFixed(2)}</span>
             </div>
-          ));
-        }
-
-        return (
-          <div
-            key={p.personalizationId}
-            className="flex items-center justify-between"
-          >
-            <span className="text-sm font-medium text-secondary">
-              + {p.label}
-            </span>
-            <span>${p.price.toFixed(2)}</span>
-          </div>
-        );
-      })}
+          );
+        })}
 
       {/* DIVIDER */}
       {list.length > 0 && <div className="border-t border-t-secondary"></div>}

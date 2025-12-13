@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import "./styles/fonts.css";
-import "./styles/globals.css";
+import "../styles/fonts.css";
+import "../styles/globals.css";
 import "material-icons/iconfont/material-icons.css";
 import "material-symbols";
 
@@ -17,7 +17,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`antialiased`}>
-        <main className="max-w-[1440px] mx-auto px-16 py-8">{children}</main>
+        <main className="max-w-[1440px] mx-auto p-4 md:px-16 md:py-8">
+          {children}
+        </main>
       </body>
     </html>
   );

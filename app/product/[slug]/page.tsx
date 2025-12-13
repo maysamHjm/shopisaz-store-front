@@ -1,21 +1,23 @@
-import AddToCard from "@/app/components/ProductAddToCard";
-import ProductMediaSlider from "@/app/components/ProductMediaSlider";
-import ProductPersonalization from "@/app/components/ProductPersonalization";
-import ProductShippingReturn from "@/app/components/ProductShippingReturn";
-import ProductShortDescription from "@/app/components/ProductShortDescription";
-import ProductVariation from "@/app/components/ProductVariation";
-import SalesCountDown from "@/app/components/SalesCountDown";
-import Tag from "@/app/components/global/Tag";
+import AddToCard from "@/components/ProductAddToCard";
+import ProductMediaSlider from "@/components/ProductMediaSlider";
+import ProductPersonalization from "@/components/ProductPersonalization";
+import ProductShippingReturn from "@/components/ProductShippingReturn";
+import ProductShortDescription from "@/components/ProductShortDescription";
+import ProductVariation from "@/components/ProductVariation";
+import SalesCountDown from "@/components/SalesCountDown";
+import Tag from "@/components/global/Tag";
 import { slugify } from "@/app/utils";
-import ProductTabBar from "@/app/components/ProductTabBar";
-import DBreadcrumb from "@/app/components/global/DBreadcrumb";
-import ProductDescription from "@/app/components/ProductDescription";
-import ProductReviews from "@/app/components/ProductReviews";
-import DRating from "@/app/components/global/DRating";
-import ProductCard from "@/app/components/ProductCard";
-import { ProductDetail } from "@/app/types/product.types";
-import DynamicPrice from "@/app/components/ProductPrice";
-import ProductPurchaseSummary from "@/app/components/productPurchaseSummary";
+import ProductTabBar from "@/components/ProductTabBar";
+import DBreadcrumb from "@/components/global/DBreadcrumb";
+import ProductDescription from "@/components/ProductDescription";
+import ProductReviews from "@/components/ProductReviews";
+import DRating from "@/components/global/DRating";
+import ProductCard from "@/components/ProductCard";
+import { ProductDetail } from "@/types/product.types";
+import DynamicPrice from "@/components/ProductPrice";
+import ProductPurchaseSummary from "@/components/productPurchaseSummary";
+import ProductDescriptionModal from "@/components/ProductDescriptionModal";
+import { ProductProcessingDateCalc } from "@/components/ProductProcessingDateCalc";
 
 export default async function ProductPage({ params, searchParams }: any) {
   const { slug } = await params;
@@ -115,17 +117,25 @@ export default async function ProductPage({ params, searchParams }: any) {
                 </span>
                 <span>Save 20% when you spend 84.93+ at this shop</span>
               </div>
-              <div className="flex items-center gap-2 text-tertiary">
-                <span className="material-symbols-rounded text-success text-xl! leading-5">
-                  check
-                </span>
-                <span>Get it by Jul 25-28 if you order today</span>
-              </div>
+              {product.processingProfile && (
+                <div className="flex items-center gap-2 text-tertiary">
+                  <span className="material-symbols-rounded text-success text-xl! leading-5">
+                    check
+                  </span>
+                  {ProductProcessingDateCalc(product.processingProfile)}
+                </div>
+              )}
             </div>
           </div>
-          <button className="font-medum text-secondary underline w-fit">
-            Size Chart
-          </button>
+
+          {product.descriptions?.modal && (
+            <ProductDescriptionModal
+              descriptionModal={product.descriptions.modal}
+              buttonText={
+                product.descriptions.modalButtonText || "See more data"
+              }
+            />
+          )}
           <div>
             {product.variants.length > 0 && (
               <ProductVariation variants={product.variants} />
@@ -150,7 +160,10 @@ export default async function ProductPage({ params, searchParams }: any) {
                 description={product.descriptions.short}
               />
             )}
-          <ProductShippingReturn />
+          <ProductShippingReturn
+            processingProfile={product.processingProfile}
+            returnExchange={product.returnExchange}
+          />
         </aside>
       </section>
       {product.relatedProducts.length > 0 && (

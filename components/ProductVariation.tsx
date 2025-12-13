@@ -4,7 +4,7 @@ import { ReactNode, useEffect, useState } from "react";
 import Select, { SingleValue } from "react-select";
 import DSelect from "./global/DSelect";
 import { ProductDetail } from "../types/product.types";
-import { useProductStore } from "../stores/product";
+import { useProductStore } from "@/stores/product";
 
 type Option = {
   value: string;

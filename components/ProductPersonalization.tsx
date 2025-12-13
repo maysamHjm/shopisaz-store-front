@@ -5,8 +5,8 @@ import DSelect from "./global/DSelect";
 import PersonalizationCheckbox from "./PersonalizationCheckbox";
 import PersonalizationRadio from "./PersonalizationRadio";
 import { ProductDetail } from "../types/product.types";
-import { useProductStore } from "../stores/product";
 import { useEffect } from "react";
+import { useProductStore } from "@/stores/product";
 
 export default function ProductPersonalization({
   personalization,
@@ -77,7 +77,12 @@ export default function ProductPersonalization({
                 }
                 options={p.items.map((it) => ({
                   value: it.id.toString(),
-                  label: it.label,
+                  label: (
+                    <span className="flex items-center justify-between w-full">
+                      <span>{it.label} </span>
+                      {it.sellPrice ? <span>${it.sellPrice} </span> : null}
+                    </span>
+                  ),
                 }))}
                 onChange={(v) =>
                   v &&
@@ -104,7 +109,7 @@ export default function ProductPersonalization({
                   }
                   title={item.label}
                   description={p.buyerInstructions}
-                  price={`$${item.sellPrice}`}
+                  price={item.sellPrice ? `$${item.sellPrice}` : null}
                   image={item.image?.url}
                   onChange={() =>
                     toggleCheckbox(
@@ -126,7 +131,7 @@ export default function ProductPersonalization({
                   checked={personalizations[p.id]?.itemId === item.id}
                   title={item.label}
                   description={p.buyerInstructions}
-                  price={`$${item.sellPrice}`}
+                  price={item.sellPrice ? `$${item.sellPrice}` : null}
                   onChange={() =>
                     setRadio(
                       p.id,

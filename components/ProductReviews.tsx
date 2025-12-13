@@ -57,11 +57,14 @@ export default function ProductReviews() {
             <h3 className="text-lg font-bold text-primary leading-7">
               Reviews
             </h3>
-            <p className="text-sm text-secondary leading-5">
+            {/* <p className="text-sm text-secondary leading-5">
               See what our customers are saying about this product and our store
+            </p> */}
+            <p className="text-sm text-secondary leading-5">
+              This store doesn’t have any reviews yet.
             </p>
           </div>
-          <div className="flex gap-4">
+          {/* <div className="flex gap-4">
             <ReviewButton
               caption="Product Reviews"
               badge="123"
@@ -74,7 +77,7 @@ export default function ProductReviews() {
               onClick={() => setReviewType("store")}
               selected={reviewType === "store"}
             />
-          </div>
+          </div> */}
         </div>
         <style>
           {`
@@ -83,7 +86,7 @@ export default function ProductReviews() {
         }
         `}
         </style>
-        <div className="border-t border-t-tertiary-border"></div>
+        {/* <div className="border-t border-t-tertiary-border"></div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="material-symbols-rounded filled text-rating!">
@@ -97,8 +100,8 @@ export default function ProductReviews() {
             icon={<span className="material-symbols-rounded">check</span>}
             size="md"
           />
-        </div>
-        <div className="flex justify-between">
+        </div> */}
+        {/* <div className="flex justify-between">
           <div className="flex gap-2 flex-col">
             <div className="flex gap-2 items-baseline">
               <div className="text-5xl text-primary font-bold">4.8</div>
@@ -111,9 +114,9 @@ export default function ProductReviews() {
             <DRatingCircle value={3.8} label="Service" />
             <DRatingCircle value={4.5} label="Shipping" />
           </div>
-        </div>
+        </div> */}
       </section>
-      <div className="p-6 flex flex-col gap-3 border border-solid border-tertiary-border rounded-2xl">
+      {/* <div className="p-6 flex flex-col gap-3 border border-solid border-tertiary-border rounded-2xl">
         <div className="flex items-cente justify-between">
           <div className="flex gap-2 items-center ">
             <DRating value={4.5} />
@@ -170,7 +173,7 @@ export default function ProductReviews() {
           />
         </div>
       </div>
-      <DPaginate total={300} onChange={() => {}} />
+      <DPaginate total={300} onChange={() => {}} /> */}
     </>
   );
 }

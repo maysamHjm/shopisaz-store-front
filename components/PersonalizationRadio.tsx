@@ -13,7 +13,7 @@ export default function PersonalizationRadio({
   onChange: (checked: boolean) => void;
   title: string;
   description: string;
-  price: string;
+  price: string | null;
   image?: string;
 }) {
   return (
@@ -36,7 +36,7 @@ export default function PersonalizationRadio({
         )}
       </div>
 
-      <div className="self-center">{price}</div>
+      {price && <div className="self-center">{price}</div>}
     </div>
   );
 }

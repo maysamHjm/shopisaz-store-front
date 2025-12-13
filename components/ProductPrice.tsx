@@ -1,7 +1,7 @@
 "use client";
 
+import { useProductStore } from "@/stores/product";
 import { useEffect } from "react";
-import { useProductStore } from "../stores/product";
 
 export default function DynamicPrice() {
   const { finalSellPrice } = useProductStore();
