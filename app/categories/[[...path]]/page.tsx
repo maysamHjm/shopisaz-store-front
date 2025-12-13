@@ -2,9 +2,12 @@
 import CategoryCard from "@/components/categories/CategoryCard";
 import CategoryGridMoreController from "@/components/categories/CategoryMoreController";
 import DBreadcrumb from "@/components/global/DBreadcrumb";
+import ProductCard from "@/components/ProductCard";
 import { CategoryPageResponse } from "@/types/category.types";
+import { ProductDetail } from "@/types/product.types";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Fragment } from "react/jsx-runtime";
 
 export default async function CategoryPage({
   params,
@@ -69,18 +72,20 @@ export default async function CategoryPage({
         />
         <div>
           <h1 className="text-3xl leading-9 text-primary font-medium text-center">
-            Clothing
+            {data.category.categoryName}
           </h1>
-          <p className="text-tertiary text-center leading-6">
-            Description text about this category
-          </p>
+          {data.category.categoryDescription && (
+            <p className="text-tertiary text-center leading-6">
+              {data.category.categoryDescription}
+            </p>
+          )}
         </div>
       </div>
       {backCardArrGen.length > 0 && (
         <div className="overflow-auto">
           <div className="flex w-fit gap-4 mx-auto items-center">
             {backCardArrGen.map((item, index) => (
-              <>
+              <Fragment key={index}>
                 <Link
                   href={`/categories/${item.id}`}
                   key={index}
@@ -103,7 +108,7 @@ export default async function CategoryPage({
                     chevron_right
                   </span>
                 )}
-              </>
+              </Fragment>
             ))}
           </div>
         </div>
@@ -113,7 +118,7 @@ export default async function CategoryPage({
           id="category-grid"
           data-grid-state="pending"
           className="
-            grid gap-6 grid-cols-[repeat(auto-fit,12.15rem)] justify-center
+            grid gap-6 grid-cols-[repeat(auto-fit,minmax(12.15rem,12.15rem))] justify-center
             overflow-hidden
             opacity-0
             transition-opacity duration-200
@@ -139,6 +144,11 @@ export default async function CategoryPage({
           })}
         </div>
         {data.children.length > 0 && <CategoryGridMoreController />}
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-8">
+        {data.products.items.map((item, index) => (
+          <ProductCard product={item} key={index} />
+        ))}
       </div>
     </section>
   );

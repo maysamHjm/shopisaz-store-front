@@ -129,7 +129,12 @@ export namespace ProductDetail {
     id: string;
     productName: string;
     sellPrice: number;
-    media: {
+    price: number;
+    quantity: string;
+    sku: string;
+    hasVariants: boolean;
+    variantCount: number;
+    image: {
       id: number;
       url: string;
       altText: string | null;

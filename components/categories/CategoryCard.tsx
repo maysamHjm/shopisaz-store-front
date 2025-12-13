@@ -17,7 +17,7 @@ export default function CategoryCard({
   return (
     <Link
       href={url || "#"}
-      className={`flex flex-col gap-2 w-full ${
+      className={`flex flex-col gap-2 w-full  ${
         !url ? "cursor-default" : "cursor-pointer"
       }`}
     >

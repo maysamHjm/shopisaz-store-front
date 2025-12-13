@@ -22,7 +22,6 @@ import { ProductProcessingDateCalc } from "@/components/ProductProcessingDateCal
 export default async function ProductPage({ params, searchParams }: any) {
   const { slug } = await params;
   const { tab } = await searchParams;
-
   // const parts = slug.split("-");
   // const shortId = parts[parts.length - 1];
 
@@ -44,27 +43,14 @@ export default async function ProductPage({ params, searchParams }: any) {
   return (
     <div className="gap-9 flex flex-col">
       <DBreadcrumb list={["Home", ...categoryList]} />
-      <section className="grid grid-cols-[calc(100%-460px)_460px] gap-6 ">
+      <section className="grid grid-cols-1 lg:grid-cols-[calc(100%-460px)_460px] gap-6 ">
         <article className="self-start flex flex-col gap-6">
           {product.media.length > 0 && (
             <ProductMediaSlider media={product.media} />
           )}
-
-          <ProductTabBar
-            hasDescription={
-              !!(
-                product.descriptions.long &&
-                product.descriptions.long !== "<p><br></p>"
-              )
-            }
-          />
-          {tab === "description" &&
-          product.descriptions.long &&
-          product.descriptions.long !== "<p><br></p>" ? (
-            <ProductDescription description={product.descriptions.long} />
-          ) : (
-            <ProductReviews />
-          )}
+          <div className="lg:flex gap-6 flex-col hidden">
+            <TabStuffs product={product} tab={tab} />
+          </div>
         </article>
         <aside className="flex flex-col gap-6">
           <div className="flex flex-col gap-3">
@@ -165,6 +151,9 @@ export default async function ProductPage({ params, searchParams }: any) {
             returnExchange={product.returnExchange}
           />
         </aside>
+        <div className="lg:hidden flex flex-col gap-6">
+          <TabStuffs product={product} tab={tab} />
+        </div>
       </section>
       {product.relatedProducts.length > 0 && (
         <section className="flex flex-col gap-4">
@@ -179,5 +168,33 @@ export default async function ProductPage({ params, searchParams }: any) {
         </section>
       )}
     </div>
+  );
+}
+
+function TabStuffs({
+  product,
+  tab,
+}: {
+  product: ProductDetail.Response;
+  tab: string;
+}) {
+  return (
+    <>
+      <ProductTabBar
+        hasDescription={
+          !!(
+            product.descriptions.long &&
+            product.descriptions.long !== "<p><br></p>"
+          )
+        }
+      />
+      {tab === "description" &&
+      product.descriptions.long &&
+      product.descriptions.long !== "<p><br></p>" ? (
+        <ProductDescription description={product.descriptions.long} />
+      ) : (
+        <ProductReviews />
+      )}
+    </>
   );
 }
